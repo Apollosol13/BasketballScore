@@ -6,10 +6,13 @@ export function Game() {
   const { scores, saveScore } = useScores(userId)
   const [currentScore, setCurrentScore] = useState(0)
   const [isGameActive, setIsGameActive] = useState(false)
+  const [gameHistory, setGameHistory] = useState<Array<{ score: number, timestamp: Date }>>([])
 
   // Handle game over
   const handleGameOver = () => {
     if (isGameActive) {
+      const gameResult = { score: currentScore, timestamp: new Date() }
+      setGameHistory(prev => [...prev, gameResult])
       saveScore(currentScore)
       setIsGameActive(false)
       setCurrentScore(0)
@@ -49,8 +52,21 @@ export function Game() {
         </div>
       )}
 
+      {/* New Game History Section */}
+      <div className="game-history">
+        <h3>Today's Games</h3>
+        <ul>
+          {gameHistory.map((game, index) => (
+            <li key={index}>
+              Game {index + 1}: {game.score} points - {game.timestamp.toLocaleTimeString()}
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      {/* All-time high scores */}
       <div className="high-scores">
-        <h3>High Scores</h3>
+        <h3>All-Time High Scores</h3>
         <ul>
           {scores.map((score, index) => (
             <li key={index}>
