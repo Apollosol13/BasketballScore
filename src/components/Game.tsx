@@ -1,5 +1,6 @@
 import { useScores } from '../hooks/useScores'
 import { useState } from 'react'
+import '../styles/Game.css'
 
 export function Game() {
   const userId = 'user123' // Replace with actual user ID management
